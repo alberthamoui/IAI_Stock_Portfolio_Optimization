@@ -1,59 +1,65 @@
 from utils import *
 
-
-def tabuSearch(meanReturns, matrizCov, iterations=1000, stepSize=0.05, tabuSize=30):
-    n = len(meanReturns)
-    current = np.random.random(n)
-    current = np.clip(current, 0, None)
-    current = current / np.sum(current)
-    best = current.copy()
-
-    bestScore, _, _ = evaluate(current, meanReturns, matrizCov)
-    tabuList = [tuple(np.round(current, 3))]
+def tabuSearchOnce(problema, iterations=10000, stepSize=0.05, tabuSize=50):
+    """
+    Executa uma única busca Tabu (memória de curto prazo) com barra de progresso (%).
+    """
+    peso = problema.gerar_estado_inicial()
+    bestPeso = peso.copy()
+    bestScore, _, _ = problema.avaliar(peso)
+    currentScore = bestScore
+    tabuList = deque(maxlen=tabuSize)
     history = [bestScore]
 
-    for i in range(iterations):
-        neighborhood = []
-        for _ in range(20):
-            neighbor = current + np.random.uniform(-stepSize, stepSize, n)
-            neighbor = np.clip(neighbor, 0, None)
-            neighbor = neighbor / np.sum(neighbor)
-            if tuple(np.round(neighbor, 3)) not in tabuList:
-                neighborhood.append(neighbor)
+    print("  Progress: ", end="")
+    last_percent = -1
 
-        if not neighborhood:
+    for i in range(iterations):
+        # ==== algoritmo principal ====
+        vizinhos = [problema.gerar_vizinho(peso, stepSize) for _ in range(10)]
+        avaliacoes = [(p, problema.avaliar(p)[0]) for p in vizinhos if not any(np.allclose(p, t) for t in tabuList)]
+
+        if not avaliacoes:
             continue
 
-        scores = [evaluate(w, meanReturns, matrizCov)[0] for w in neighborhood]
-        bestNeighbor = neighborhood[np.argmax(scores)]
-        bestNeighborScore = np.max(scores)
+        melhorVizinho, melhorScore = max(avaliacoes, key=lambda x: x[1])
+        tabuList.append(melhorVizinho)
 
-        current = bestNeighbor
-        if bestNeighborScore > bestScore:
-            best = bestNeighbor
-            bestScore = bestNeighborScore
+        if melhorScore > bestScore:
+            bestPeso = melhorVizinho
+            bestScore = melhorScore
 
-        tabuList.append(tuple(np.round(bestNeighbor, 3)))
-        if len(tabuList) > tabuSize:
-            tabuList.pop(0)
-
+        peso = melhorVizinho
+        currentScore = melhorScore
         history.append(bestScore)
 
-        print(f"  Tabu Search {100 * i / iterations:.2f}% done")
+        # ==== progress bar update ====
+        percent = int(100 * (i + 1) / iterations)
+        if percent != last_percent:  # print only on change
+            bar = "=" * (percent // 2) + "-" * ((100 - percent) // 2)
+            sys.stdout.write(f"\r  [{bar}] {percent:3d}%")
+            sys.stdout.flush()
+            last_percent = percent
 
-    return best, bestScore, history
+    print("\r  [==================================================] 100% ✅")
+    return bestPeso, bestScore, history
 
-def tabuSearchParallel(meanReturns, matrizCov, runs=8, iterations=1000, stepSize=0.05, tabuSize=30):
+
+def tabuSearchParallel(problema, runs=8, iterations=10000, stepSize=0.05, tabuSize=50):
+    """
+    Executa várias buscas Tabu em paralelo e retorna o melhor resultado.
+    """
     print(f"Running Tabu Search ({runs} parallel runs)...")
-    tasks = [(meanReturns, matrizCov, iterations, stepSize, tabuSize)] * runs
     results = []
 
     with ThreadPoolExecutor() as executor:
-        futures = [executor.submit(tabuSearch, *t) for t in tasks]
+        futures = [
+            executor.submit(tabuSearchOnce, problema, iterations, stepSize, tabuSize)
+            for _ in range(runs)
+        ]
         for idx, f in enumerate(as_completed(futures), 1):
             results.append(f.result())
             print(f"  Run {idx}/{runs} complete")
 
     best = max(results, key=lambda x: x[1])
     return best
-

@@ -6,6 +6,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 import csv
 import matplotlib.pyplot as plt
+import math
+from collections import deque
+import sys
 
 DATA_DIR = "data"   # Folder containing all stock CSVs
 LAMBDA = 0.5        # Trade-off between return and risk

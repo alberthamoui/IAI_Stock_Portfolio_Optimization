@@ -1,0 +1,5 @@
+Algorithm,Best Score,Time (s)
+Hill Climbing,-0.005674726220609056,14.88
+Simulated Annealing,-0.005856973026224712,14.04
+Tabu Search,-0.005723189951525883,24.46
+Genetic Algorithm,-0.005633981073525926,1.41

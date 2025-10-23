@@ -1,0 +1,22 @@
+Resultados Finais – Metaheurísticas de Otimização
+=====================================================
+
+Hill Climbing
+  Melhor Score: -0.005675
+  Tempo: 14.88 s
+-----------------------------------------------------
+Simulated Annealing
+  Melhor Score: -0.005857
+  Tempo: 14.04 s
+-----------------------------------------------------
+Tabu Search
+  Melhor Score: -0.005723
+  Tempo: 24.46 s
+-----------------------------------------------------
+Genetic Algorithm
+  Melhor Score: -0.005634
+  Tempo: 1.41 s
+-----------------------------------------------------
+Melhor algoritmo: Genetic Algorithm
+Score final: -0.005634
+Tempo total: 54.79 s
