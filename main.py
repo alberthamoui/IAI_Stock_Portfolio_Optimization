@@ -9,11 +9,11 @@ import time
 
 # Definir parâmetros 
 runsHC = 8
-iterationsHC = 5000
+iterationsHC = 1000
 stepSizeHC = 0.05
 
 runSA = 8
-iterationsSA = 5000
+iterationsSA = 1000
 stepSizeSA = 0.05
 initialTempSA = 1.0
 coolingRateSA = 0.995
@@ -25,10 +25,12 @@ tabuSizeTS = 50
 
 runsGA = 8
 pop_sizeGA = 30
-generationsGA = 200
+generationsGA = 1000
 crossover_rateGA = 0.8
 mutation_rateGA = 0.1
 stepSizeGA = 0.05
+
+
 
 # 0. Tempo total
 mainStartTime = time.time()
@@ -55,6 +57,7 @@ res_tb = agente_tb.executar(runs=runsTS, iterations=iterationsTS, stepSize=stepS
 agente_ga = AgenteOtimizacao(problema, geneticAlgorithmParallel)
 res_ga = agente_ga.executar(runs=runsGA, pop_size=pop_sizeGA, generations=generationsGA,
                             crossover_rate=crossover_rateGA, mutation_rate=mutation_rateGA, stepSize=stepSizeGA)
+
 # 6. Tempo final
 mainFinalTime = time.time()
 

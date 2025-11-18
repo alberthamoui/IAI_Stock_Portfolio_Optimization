@@ -16,7 +16,7 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 RESULTS_DIR = os.path.join(BASE_DIR, "results")
 
 # DATA_DIR = "data"   # Folder containing all stock CSVs
-LAMBDA = 0.5        # Trade-off between return and risk
+LAMBDA = 0.2        # Trade-off between return and risk
                     # ↑ higher lambda = safer (lower risk, lower return)
 
 def loadData(path=DATA_DIR):
@@ -57,8 +57,8 @@ def evaluate(peso, meanReturns, matrizCov, lambda_=LAMBDA):
 
     retorno = np.dot(peso, meanReturns)
     risco = np.sqrt(np.dot(peso.T, np.dot(matrizCov, peso)))
-    score = retorno - lambda_ * risco
 
+    score = ((1 - lambda_) * retorno) - (lambda_ * risco)
     return score, retorno, risco
 
 
