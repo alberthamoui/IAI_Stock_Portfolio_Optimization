@@ -9,23 +9,23 @@ import time
 
 # Definir parâmetros 
 runsHC = 8
-iterationsHC = 1000
+iterationsHC = 5000
 stepSizeHC = 0.05
 
 runSA = 8
-iterationsSA = 1000
+iterationsSA = 5000
 stepSizeSA = 0.05
 initialTempSA = 1.0
 coolingRateSA = 0.995
 
 runsTS = 8
-iterationsTS = 1000
+iterationsTS = 5000
 stepSizeTS = 0.05
 tabuSizeTS = 50
 
 runsGA = 8
 pop_sizeGA = 30
-generationsGA = 1000
+generationsGA = 5000
 crossover_rateGA = 0.8
 mutation_rateGA = 0.1
 stepSizeGA = 0.05
