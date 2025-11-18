@@ -25,7 +25,7 @@ class ProblemaPortfolio:
         pesos /= np.sum(pesos)
         retorno = np.dot(pesos, self.meanReturns)
         risco = np.sqrt(np.dot(pesos.T, np.dot(self.matrizCov, pesos)))
-        score = retorno - self.lambda_ * risco
+        score = ((1 - self.lambda_) * retorno) - (self.lambda_ * risco)
         return score, retorno, risco
 
     def gerar_vizinho(self, pesos, stepSize=0.05):
