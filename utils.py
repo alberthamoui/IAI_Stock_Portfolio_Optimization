@@ -15,7 +15,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 RESULTS_DIR = os.path.join(BASE_DIR, "results")
 
-# DATA_DIR = "data"   # Folder containing all stock CSVs
 LAMBDA = 0.2        # Trade-off between return and risk
                     # ↑ higher lambda = safer (lower risk, lower return)
 
