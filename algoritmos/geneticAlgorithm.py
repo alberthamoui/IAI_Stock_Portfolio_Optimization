@@ -78,7 +78,7 @@ def geneticAlgorithmOnce(problema, pop_size=30, generations=200, crossover_rate=
     return best, bestScore, history
 
 
-def geneticAlgorithm(problema, runs=8, pop_size=30, generations=200, crossover_rate=0.8, mutation_rate=0.1, stepSize=0.05):
+def geneticAlgorithmParallel(problema, runs=8, pop_size=30, generations=200, crossover_rate=0.8, mutation_rate=0.1, stepSize=0.05):
     """
     Executa várias instâncias do Algoritmo Genético em paralelo.
     """

@@ -7,10 +7,11 @@ class AgenteOtimizacao:
 
     def executar(self, **kwargs):
         inicio = time.time()
-        melhor_estado, melhor_valor, _ = self.metodo(self.problema, **kwargs)
+        melhor_estado, melhor_valor, historico = self.metodo(self.problema, **kwargs)
         duracao = time.time() - inicio
         return {
             "melhor_estado": melhor_estado,
             "melhor_valor": melhor_valor,
+            "historico": historico,
             "tempo": duracao
         }
